@@ -4,6 +4,7 @@ import { collection, getDocs, query, where, orderBy, limit, startAfter } from 'f
 import { db } from '../firebase.config'
 import { toast } from 'react-toastify'
 import Spinner from "../components/Spinner"
+import ListingItem from "../components/ListingItem"
 
 
 function Category() {
@@ -11,12 +12,19 @@ function Category() {
     const [isLoading, setIsLoading] = useState(false)
     const { categoryName } = useParams()
 
+    const deleteListing = (id, name) => {
+        console.log(`Deleted Listing ${name} listing [${id}]`)
+    }
+
     const fetchListings = async () => {
         setIsLoading(true)
         try{
             // Get doc Ref
             const collectionRef = collection(db, 'listings')
-            const q = query(collectionRef, where('type', '==', categoryName))
+            const q = query(collectionRef, 
+                where('type', '==', categoryName), 
+                orderBy("timestamp", 'desc'), 
+                limit(10))
 
             const querySnapShot = await getDocs(q)
 
@@ -56,8 +64,7 @@ function Category() {
                         {listings.map((listing) => {
                             return (
                             <div>
-                                <img style={{width: '240px', height: 'auto', borderRadius: '1.5rem'}} src={listing.data.imageUrls[0]} alt={`${listing.data.name} listing for ${categoryName}`} />
-                                <h3>{listing.data.name}</h3>
+                                <ListingItem listing={listing.data} id={listing.id}/>
                             </div>)
                         })}
                     </ul>
