@@ -61,11 +61,8 @@ function CreateListing() {
 
     const onSubmit = async (e) => {
         e.preventDefault()
-        
-        setIsLoading(true)
 
         if(discountedPrice >= regularPrice){
-            console.log('grah')
             toast.error('Discounted price needs to be less than regular price')
             return 
         }
@@ -75,6 +72,8 @@ function CreateListing() {
             toast.error('Max 6 images')
             return
         }
+
+        setIsLoading(true)
 
         let geolocation = {}
         let listingLocation
@@ -100,7 +99,6 @@ function CreateListing() {
         }
 
         formData.geolocation = geolocation
-        listingLocation && (formData.location = listingLocation)
         delete formData.lat
         delete formData.lng
 
@@ -149,8 +147,14 @@ function CreateListing() {
             return
         })
 
-        formData.imageURLs = imgURLs
+        formData.imageUrls = imgURLs
         delete formData.images
+        formData.timestamp = serverTimestamp()
+        !offer && delete formData.discountedPrice
+
+        const docRef = await addDoc(collection(db, 'listings'), formData)
+        toast.success("New listing added")
+        mover(`/category/${formData.type}`)
 
         setIsLoading(false)
     }
