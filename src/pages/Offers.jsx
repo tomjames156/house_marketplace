@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react'
 import { toast } from 'react-toastify'
-import { getAuth } from 'firebase/auth'
 import { getDocs, collection, orderBy, limit, where, query } from 'firebase/firestore'
 import ListingItem from '../components/ListingItem'
 import Spinner from '../components/Spinner'
@@ -54,7 +53,7 @@ function Offers() {
                     <ul className="categoryListings">
                         {listings.map((listing) => {
                             return (
-                            <div>
+                            <div key={listing.id}>
                                 <ListingItem listing={listing.data} id={listing.id}/>
                             </div>)
                         })}

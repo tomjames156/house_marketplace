@@ -9,6 +9,7 @@ import Category from './pages/Category'
 import PrivateWrapper from './utlis/PrivateWrapper'
 import Navbar from './components/Navbar'
 import { ToastContainer } from 'react-toastify'
+import CreateListing from './pages/CreateListing'
 
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
           <Route path="/offers" element={<Offers/>}></Route>
           <Route path="/category/:categoryName" element={<Category/>} />
           <Route path="/forgot-password" element={<ForgotPassword/>}></Route>
+          <Route path="/listing/create" element={<CreateListing/>} />
         </Routes>
         <Navbar/>
       </Router>
