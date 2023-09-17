@@ -38,7 +38,6 @@ function Category() {
             })
 
             setListings(listings)
-            console.log(listings)
         }catch(err){
             toast.error("Failed to fetch listings 🥲")
         }
